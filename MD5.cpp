@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <string.h>
 using namespace std;
 
 #define shift(x, n) (((x) << (n)) | ((x) >> (32 - (n)))) //右移的时候，高位一定要补零，而不是补充符号位
@@ -59,13 +60,13 @@ string MD5::getMD5hash(string str)
 {
     unsigned int *groups = padding(str); //填充
     mainloop(groups);                    //分块、缓冲区初始化、循环压缩
-    cout << bin2hex(A) + bin2hex(B) + bin2hex(C) + bin2hex(D);
+    return bin2hex(A) + bin2hex(B) + bin2hex(C) + bin2hex(D);
 }
 
 //进行数据填充
 unsigned int *MD5::padding(string str)
 {
-    int slength = str.length; //计算输入字符串的长度
+    int slength = str.length(); //计算输入字符串的长度
 
     // 计算总共的组数，64个字节一组
     unsigned int fullsize = (slength + 8) / 64 + 1;
@@ -155,4 +156,13 @@ string MD5::bin2hex(int bin)
         res += hex;
     }
     return res;
+}
+
+int main(int argc, char const *argv[])
+{
+    MD5 md5 = MD5();
+    cout << md5.getMD5hash("abc");
+
+    /* code */
+    return 0;
 }
